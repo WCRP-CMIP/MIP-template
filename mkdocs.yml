@@ -1,35 +1,42 @@
-site_name: MIP Template Site
-site_description: A template for Model Intercomparison Projects (MIPs) to stand up their own webpage
+site_name: Your MIP Name
+site_description: Description of your Model Intercomparison Project
 site_author: WCRP-CMIP
-repo_url: https://github.com/WCRP-CMIP/MIP-template-theme
-repo_name: WCRP-CMIP/MIP-template-theme
+site_url: https://your-org.github.io/your-repo/
 
+# Theme configuration
 theme:
   name: shadcn
   palette:
     primary: blue
     accent: cyan
+  show_stargazers: false
 
+# Plugins
 plugins:
   - search
 
-nav:
-  - Home: index.md
-  - Developers:
-    - Getting Started: developers/getting-started.md
-    - Updating Content: developers/updating-content.md
+# Custom CSS and JavaScript for footer
+extra_css:
+  - assets/custom.css
 
+extra_javascript:
+  - assets/footer.js
+
+# Navigation is auto-generated from folder structure
+
+# Markdown extensions
 markdown_extensions:
   - admonition
-  - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences
   - pymdownx.details
+  - pymdownx.superfences
+  - tables
   - toc:
       permalink: true
+  - attr_list
+  - md_in_html
 
+# Versioning
 extra:
   version:
     provider: mike
+    default: latest

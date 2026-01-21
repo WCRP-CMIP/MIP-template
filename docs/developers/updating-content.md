@@ -1,186 +1,160 @@
 # Updating Content
 
-This guide explains how to add, modify, and organize content in your MIP documentation site.
+How to edit pages and add new content.
 
-## File Organization
+## Editing Pages
 
-All documentation files are stored in the `docs/` directory as Markdown (`.md`) files.
+1. Navigate to any `.md` file in the `docs/` folder on GitHub
+2. Click the pencil icon to edit
+3. Make your changes
+4. Click **Commit changes**
+
+The site rebuilds automatically within a few minutes.
+
+## Navigation
+
+Navigation is generated automatically from your folder structure. No configuration needed.
 
 ```
 docs/
-├── index.md           # Home page
-├── developers/        # Developer documentation folder
-│   ├── getting-started.md
-│   └── updating-content.md
-└── your-folder/       # Add your own folders
-    └── your-page.md
+├── index.md              → Home (always first)
+├── about/                → "About" section
+│   ├── overview.md       →   Overview page
+│   ├── committee.md      →   Committee page
+│   └── publications.md   →   Publications page
+├── experiments/          → "Experiments" section
+│   ├── design.md
+│   └── data.md
+└── resources/            → "Resources" section
+    ├── links.md
+    └── faqs.md
 ```
+
+**How it works:**
+
+- Folders become navigation sections
+- Files become pages within sections
+- `index.md` in a folder becomes the section landing page
+- Pages are sorted alphabetically (use number prefixes like `01-first.md` to control order)
 
 ## Adding a New Page
 
-### 1. Create the Markdown File
+1. Create a `.md` file in the appropriate folder
+2. Commit and push
 
-Create a new `.md` file in the `docs/` directory or a subfolder:
+That's it. The navigation updates automatically.
 
-```bash
-# Create a new page
-echo "# My New Page" > docs/my-page.md
+## Adding a New Section
 
-# Or create in a folder
-mkdir -p docs/about
-echo "# About Our MIP" > docs/about/overview.md
+1. Create a new folder in `docs/`
+2. Add `.md` files inside it
+3. Commit and push
+
+## Adding Images
+
+### From a URL
+
+Link directly to an external image:
+
+```markdown
+![Alt text](https://example.com/image.png)
 ```
 
-### 2. Add to Navigation
+### Local Images
 
-Edit `mkdocs.yml` and add your page to the `nav` section:
+1. Add your image to `docs/assets/`
+2. Reference it in your Markdown:
+
+```markdown
+![My Image](assets/my-image.png)
+```
+
+From a subfolder, use relative paths:
+
+```markdown
+![My Image](../assets/my-image.png)
+```
+
+### Image with Size
+
+Use HTML for more control:
+
+```html
+<img src="assets/logo.png" alt="Logo" width="200">
+```
+
+## Changing the Site Icon
+
+To add a custom logo/icon to your site:
+
+1. Add your icon file to `docs/assets/` (e.g., `logo.svg` or `logo.png`)
+2. Edit `mkdocs.yml` and add under the `theme` section:
 
 ```yaml
-nav:
-  - Home: index.md
-  - About:
-    - Overview: about/overview.md
-  - My New Page: my-page.md
-  - Developers:
-    - Getting Started: developers/getting-started.md
-    - Updating Content: developers/updating-content.md
+theme:
+  name: shadcn
+  icon: assets/logo.svg
 ```
 
-### 3. Preview Your Changes
+SVG format is recommended for crisp display at any size.
 
-```bash
-mkdocs serve
-```
+## Including HTML Pages
 
-Visit `http://127.0.0.1:8000/` to see your changes.
+You can include raw HTML files alongside Markdown:
 
-## Markdown Basics
+1. Create an `.html` file in `docs/` (e.g., `docs/custom-page.html`)
+2. The file will be copied as-is to the built site
+3. Link to it from other pages: `[Custom Page](custom-page.html)`
 
-### Headings
+For HTML that should use the site template, use Markdown with embedded HTML instead:
 
 ```markdown
-# Heading 1
-## Heading 2
-### Heading 3
+# My Page
+
+<div class="custom-content">
+  <p>HTML content here</p>
+</div>
 ```
 
-### Links
+The `md_in_html` extension is enabled, so you can mix Markdown inside HTML blocks by adding `markdown="1"`:
+
+```html
+<div class="wrapper" markdown="1">
+
+## This is Markdown
+
+Inside an HTML div.
+
+</div>
+```
+
+## Page Titles
+
+The page title comes from the first `# Heading` in your file:
 
 ```markdown
-[Link text](https://example.com)
-[Internal link](../other-page.md)
+# This Becomes the Page Title
+
+Content starts here...
 ```
 
-### Lists
+## Markdown Help
 
-```markdown
-- Bullet point 1
-- Bullet point 2
-  - Nested item
+**Basic formatting:**
 
-1. Numbered item 1
-2. Numbered item 2
-```
+| Syntax | Result |
+|--------|--------|
+| `**bold**` | **bold** |
+| `*italic*` | *italic* |
+| `[text](https://...)` | link |
+| `![alt](image.png)` | image |
 
-### Code Blocks
+**Resources:**
 
-````markdown
-```python
-def hello_world():
-    print("Hello, World!")
-```
-````
+- [Markdown Guide](https://www.markdownguide.org/basic-syntax/) - Basic syntax
+- [MkDocs Documentation](https://www.mkdocs.org/user-guide/writing-your-docs/) - MkDocs features
+- [Tables Generator](https://www.tablesgenerator.com/markdown_tables) - Create tables easily
 
-### Images
+## Next Steps
 
-```markdown
-![Alt text](images/my-image.png)
-```
-
-Place images in `docs/images/` folder.
-
-## Advanced Features
-
-### Admonitions (Call-outs)
-
-```markdown
-!!! note
-    This is a note admonition.
-
-!!! warning
-    This is a warning.
-
-!!! tip
-    This is a helpful tip.
-```
-
-### Tables
-
-```markdown
-| Column 1 | Column 2 | Column 3 |
-|----------|----------|----------|
-| Data 1   | Data 2   | Data 3   |
-| Data 4   | Data 5   | Data 6   |
-```
-
-## Publishing Changes
-
-### Automatic Deployment
-
-When you push changes to the `main` branch, GitHub Actions will automatically:
-
-1. Build your documentation
-2. Deploy it to GitHub Pages using mike
-3. Make it available at your GitHub Pages URL
-
-```bash
-git add .
-git commit -m "Update documentation"
-git push origin main
-```
-
-### Manual Build
-
-To manually build the site:
-
-```bash
-# Build static site
-mkdocs build
-
-# Deploy to GitHub Pages with versioning
-mike deploy --push --update-aliases 0.1 latest
-mike set-default --push latest
-```
-
-## Versioning with Mike
-
-Mike allows you to maintain multiple versions of your documentation:
-
-```bash
-# Deploy a new version
-mike deploy --push 1.0 latest
-
-# List all versions
-mike list
-
-# Set default version
-mike set-default --push latest
-
-# Delete a version
-mike delete --push 0.9
-```
-
-## Tips for Organizing Content
-
-1. **Use folders** for related content (e.g., `tutorials/`, `reference/`, `about/`)
-2. **Keep filenames simple** and use hyphens (e.g., `getting-started.md`, not `Getting Started.md`)
-3. **Use descriptive headings** to improve navigation
-4. **Link between pages** to create a connected documentation experience
-5. **Add images** to the `docs/images/` folder
-
-## Getting Help
-
-- [MkDocs Documentation](https://www.mkdocs.org/)
-- [Markdown Guide](https://www.markdownguide.org/)
-- [PyMdown Extensions](https://facelessuser.github.io/pymdown-extensions/)
-- [Mike Documentation](https://github.com/jimporter/mike)
+- [Testing Locally](testing-locally.md) - Preview changes before publishing

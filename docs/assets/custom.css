@@ -1,0 +1,6 @@
+/* Custom styles */
+
+/* Hide GitHub icon in toolbar */
+a[href="None"][target="_blank"] {
+  display: none !important;
+}

@@ -1,92 +1,46 @@
-# Developer Guide: Getting Started
+# Getting Started
 
-This guide will help you set up and customize this MkDocs template for your MIP (Model Intercomparison Project).
+How to create your own MIP documentation site from this template.
 
-## Prerequisites
+## Step 1: Create Your Repository
 
-Before you begin, ensure you have:
+1. Go to the [MIP-template repository](https://github.com/WCRP-CMIP/MIP-template)
+2. Click the green **Use this template** button
+3. Select **Create a new repository**
+4. Choose your organization and enter a repository name
+5. Click **Create repository**
 
-- Python 3.8 or higher installed
-- Git installed
-- A GitHub account
-- Basic knowledge of Markdown
+## Step 2: Configure Your Site
 
-## Initial Setup
+Edit `mkdocs.yml` directly on GitHub:
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/WCRP-CMIP/MIP-template-theme.git
-cd MIP-template-theme
-```
-
-### 2. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-This will install:
-
-- **mkdocs** - The static site generator
-- **mkdocs-shadcn** - The modern Shadcn theme
-- **mike** - For versioning your documentation
-- **pymdown-extensions** - Additional Markdown features
-
-### 3. Preview Locally
-
-To preview your site locally:
-
-```bash
-mkdocs serve
-```
-
-Then open your browser to `http://127.0.0.1:8000/`
-
-The site will automatically reload when you make changes to the documentation files.
-
-## Project Structure
-
-```
-MIP-template-theme/
-├── docs/               # Documentation source files
-│   ├── index.md       # Home page
-│   └── developers/    # Developer documentation
-├── mkdocs.yml         # MkDocs configuration
-├── requirements.txt   # Python dependencies
-└── .github/
-    └── workflows/     # GitHub Actions for auto-deployment
-```
-
-## Configuration
-
-### Updating Site Information
-
-Edit `mkdocs.yml` to customize your site:
+1. Click on `mkdocs.yml` in your new repository
+2. Click the pencil icon (Edit this file)
+3. Update these lines at the top:
 
 ```yaml
-site_name: Your MIP Name        # Change this to your MIP name
-site_description: Your description
-site_author: Your organization
-repo_url: https://github.com/your-org/your-repo
-repo_name: your-org/your-repo
+site_name: Your MIP Name
+site_description: Brief description of your MIP
+site_author: Your Organization
+site_url: https://your-org.github.io/your-repo/
 ```
 
-### Theme Customization
+4. Click **Commit changes**
 
-The Shadcn theme can be customized in `mkdocs.yml`:
+## Step 3: Enable GitHub Pages
 
-```yaml
-theme:
-  name: shadcn
-  palette:
-    primary: blue    # Change color scheme
-    accent: cyan
-```
+1. Go to **Settings** in your repository
+2. Click **Pages** in the left sidebar
+3. Under "Build and deployment", select **Deploy from a branch**
+4. Select **gh-pages** branch and **/ (root)** folder
+5. Click **Save**
+
+Your site will be live at: `https://YOUR-ORG.github.io/YOUR-REPO/`
+
+!!! note
+    The gh-pages branch is created automatically after your first commit to main. If you don't see it, make a small edit to any file and commit it.
 
 ## Next Steps
 
-- [Learn how to update content](updating-content.md)
-- Read the [MkDocs documentation](https://www.mkdocs.org/)
-- Explore [mkdocs-shadcn theme options](https://github.com/asiffer/mkdocs-shadcn)
-- Learn about [mike versioning](https://github.com/jimporter/mike)
+- [Updating Content](updating-content.md) - How to edit pages and navigation
+- [Testing Locally](testing-locally.md) - Preview changes on your computer
