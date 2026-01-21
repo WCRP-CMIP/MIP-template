@@ -2,7 +2,6 @@
 
 Welcome to **Your MIP Name** - a Model Intercomparison Project within CMIP.
 
-![Banner image placeholder](https://via.placeholder.com/1200x300/4051b5/ffffff?text=Your+MIP+Banner+Image)
 
 ## Overview
 
@@ -14,6 +13,8 @@ Your MIP carries out coordinated Earth system model simulations to address [desc
 
 Your MIP is part of the Coupled Model Intercomparison Project organised by the [World Climate Research Programme](https://www.wcrp-climate.org/).
 
+
+
 ## Quick Links
 
 | Resource | Description |
@@ -22,6 +23,12 @@ Your MIP is part of the Coupled Model Intercomparison Project organised by the [
 | [Data Requirements](experiments/data.md) | Required outputs and variables |
 | [Steering Committee](about/committee.md) | Leadership and contacts |
 | [Publications](about/publications.md) | Key papers and citations |
+
+
+## Banner image placeholder
+
+![Banner image](https://wcrp-cmip.org/wp-content/uploads/2022/11/EGU-event-banner.png)
+
 
 ## Latest News
 
