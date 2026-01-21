@@ -4,6 +4,8 @@
 
 A template for Model Intercomparison Projects to create documentation websites.
 
+**Example site:** https://wcrp-cmip.github.io/MIP-template/
+
 ## Quick Start
 
 1. Click **Use this template** → **Create a new repository**

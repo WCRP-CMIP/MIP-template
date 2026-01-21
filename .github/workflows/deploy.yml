@@ -35,9 +35,12 @@ jobs:
       - name: Get current version
         id: get_version
         run: |
+          # Fetch gh-pages to get version history
+          git fetch origin gh-pages --depth=1 2>/dev/null || true
+          
           # Try to get the latest version from mike, default to 0.0.0
-          CURRENT=$(mike list 2>/dev/null | grep -oP '^\d+\.\d+\.\d+' | head -1 || echo "0.0.0")
-          if [ -z "$CURRENT" ] || [ "$CURRENT" = "" ]; then
+          CURRENT=$(mike list 2>/dev/null | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+' | head -1 || echo "")
+          if [ -z "$CURRENT" ]; then
             CURRENT="0.0.0"
           fi
           echo "current=$CURRENT" >> $GITHUB_OUTPUT
@@ -46,15 +49,16 @@ jobs:
       - name: Check for new pages
         id: check_pages
         run: |
-          # Check if any .md files were added in docs/ (excluding developers/)
-          NEW_PAGES=$(git diff --name-status HEAD~1 HEAD -- 'docs/*.md' 'docs/about/*.md' 'docs/experiments/*.md' 'docs/resources/*.md' 2>/dev/null | grep '^A' | wc -l || echo "0")
+          # Check if any .md files were added in docs/
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            NEW_PAGES=$(git diff --name-status HEAD~1 HEAD -- 'docs/*.md' 'docs/**/*.md' 2>/dev/null | grep '^A' | wc -l || echo "0")
+          else
+            NEW_PAGES="0"
+          fi
           
-          # Also check mkdocs.yml nav changes for new entries
-          NAV_CHANGES=$(git diff HEAD~1 HEAD -- mkdocs.yml 2>/dev/null | grep -c '^\+.*\.md' || echo "0")
-          
-          if [ "$NEW_PAGES" -gt 0 ] || [ "$NAV_CHANGES" -gt 0 ]; then
+          if [ "$NEW_PAGES" -gt 0 ]; then
             echo "new_pages=true" >> $GITHUB_OUTPUT
-            echo "New pages detected: $NEW_PAGES files, $NAV_CHANGES nav entries"
+            echo "New pages detected: $NEW_PAGES files"
           else
             echo "new_pages=false" >> $GITHUB_OUTPUT
             echo "No new pages detected"
@@ -87,6 +91,11 @@ jobs:
       - name: Deploy with mike
         run: |
           VERSION="${{ steps.new_version.outputs.version }}"
-          mike deploy --push --update-aliases $VERSION latest
+          
+          # Delete 'latest' if it exists as a version (not alias) to avoid conflicts
+          mike delete latest 2>/dev/null || true
+          
+          # Deploy the new version with 'latest' alias
+          mike deploy --push --update-aliases "$VERSION" latest
           mike set-default --push latest
           echo "Deployed version $VERSION"
