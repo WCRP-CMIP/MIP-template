@@ -44,4 +44,4 @@ See the [For Developers](docs/developers/getting-started.md) section for full in
 
 ---
 
-Built by [Daniel Ellis](https://github.com/wolfiex) for the [WCRP-CMIP](https://wcrp-cmip.org) using the [shadcn](https://github.com/asiffer/mkdocs-shadcn) theme.
+Built by [Daniel Ellis](https://github.com/wolfiex) for [WCRP-CMIP](https://wcrp-cmip.org) using the [shadcn](https://github.com/asiffer/mkdocs-shadcn) theme.

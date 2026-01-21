@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (footerContent) {
       footerContent.innerHTML = `
         Built by <a href="https://github.com/wolfiex">Daniel Ellis</a>
-        for the <a href="https://wcrp-cmip.org">WCRP-CMIP</a>
+        for <a href="https://wcrp-cmip.org">WCRP-CMIP</a>
         using the <a href="https://github.com/asiffer/mkdocs-shadcn">shadcn</a> theme.
       `;
     }
