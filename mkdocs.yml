@@ -1,7 +1,7 @@
 site_name: Your MIP Name
 site_description: Description of your Model Intercomparison Project
 site_author: WCRP-CMIP
-site_url: https://wcrp-cmip.github.io/MIP-template/
+# site_url left empty for relative links - mike handles versioned paths
 
 # Theme configuration
 theme:

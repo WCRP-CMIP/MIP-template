@@ -17,28 +17,48 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function addVersionSelector() {
-  // Fetch versions.json from mike
-  const baseUrl = document.querySelector('script[src*="base_url"]') 
-    ? base_url 
-    : window.location.pathname.split('/').slice(0, -2).join('/') + '/';
+  // Calculate the base URL for versions.json
+  // mike stores versions.json at the root, e.g., /MIP-template/versions.json
+  // Current URL might be /MIP-template/latest/about/committee/
   
-  fetch(baseUrl + '../versions.json')
-    .then(response => response.json())
+  const pathParts = window.location.pathname.split('/').filter(p => p);
+  
+  // Find the repo name (first path segment) and version (second segment)
+  // Structure: /repo-name/version/page/path/
+  const repoName = pathParts[0] || '';
+  const versionOrAlias = pathParts[1] || '';
+  
+  // Build the base URL to versions.json
+  const origin = window.location.origin;
+  const versionsUrl = `${origin}/${repoName}/versions.json`;
+  
+  fetch(versionsUrl)
+    .then(response => {
+      if (!response.ok) throw new Error('versions.json not found');
+      return response.json();
+    })
     .then(versions => {
       if (!versions || versions.length === 0) return;
 
-      // Find current version from URL
-      const pathParts = window.location.pathname.split('/').filter(p => p);
+      // Find current version from URL path
       const currentVersion = versions.find(v => 
-        pathParts.includes(v.version) || v.aliases.some(a => pathParts.includes(a))
+        v.version === versionOrAlias || v.aliases.includes(versionOrAlias)
       );
 
       // Create dropdown
       const dropdown = document.createElement('div');
       dropdown.className = 'version-selector';
+      
+      // Sort versions: latest first, then by version number descending
+      const sortedVersions = [...versions].sort((a, b) => {
+        if (a.aliases.includes('latest')) return -1;
+        if (b.aliases.includes('latest')) return 1;
+        return b.version.localeCompare(a.version, undefined, { numeric: true });
+      });
+      
       dropdown.innerHTML = `
-        <select id="version-select" class="bg-background border rounded-md px-2 py-1 text-sm cursor-pointer">
-          ${versions.map(v => {
+        <select id="version-select" title="Select documentation version">
+          ${sortedVersions.map(v => {
             const label = v.aliases.includes('latest') ? `${v.version} (latest)` : v.version;
             const selected = currentVersion && (v.version === currentVersion.version) ? 'selected' : '';
             return `<option value="${v.version}" ${selected}>${label}</option>`;
@@ -59,24 +79,30 @@ function addVersionSelector() {
       // Handle version change
       document.getElementById('version-select').addEventListener('change', function(e) {
         const newVersion = e.target.value;
-        const currentPath = window.location.pathname;
         
-        // Replace version in path
-        let newPath;
-        if (currentVersion) {
-          newPath = currentPath.replace(
-            new RegExp(`/(${currentVersion.version}|${currentVersion.aliases.join('|')})/`),
-            `/${newVersion}/`
-          );
-        } else {
-          newPath = baseUrl + newVersion + '/';
-        }
+        // Get the page path after the version segment
+        // e.g., /MIP-template/latest/about/committee/ -> about/committee/
+        const pagePath = pathParts.slice(2).join('/');
         
-        window.location.href = newPath;
+        // Build new URL with selected version
+        const newUrl = `${origin}/${repoName}/${newVersion}/${pagePath}`;
+        
+        // Try to navigate to the same page in new version, fallback to version root
+        fetch(newUrl, { method: 'HEAD' })
+          .then(response => {
+            if (response.ok) {
+              window.location.href = newUrl;
+            } else {
+              window.location.href = `${origin}/${repoName}/${newVersion}/`;
+            }
+          })
+          .catch(() => {
+            window.location.href = `${origin}/${repoName}/${newVersion}/`;
+          });
       });
     })
     .catch(err => {
       // No versions.json available (local dev or first deploy)
-      console.log('Version selector: No versions available yet');
+      console.log('Version selector: versions.json not available -', err.message);
     });
 }
