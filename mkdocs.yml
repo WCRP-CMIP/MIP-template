@@ -1,7 +1,10 @@
 site_name: Your MIP Name
 site_description: Description of your Model Intercomparison Project
 site_author: WCRP-CMIP
-# site_url left empty for relative links - mike handles versioned paths
+site_url: ""
+
+# Use relative URLs
+use_directory_urls: true
 
 # Theme configuration
 theme:
@@ -10,6 +13,7 @@ theme:
     primary: blue
     accent: cyan
   show_stargazers: false
+  custom_dir: docs/overrides
 
 # Plugins
 plugins:
