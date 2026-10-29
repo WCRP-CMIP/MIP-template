@@ -1,3 +1,9 @@
+
+> [!WARNING]
+> This repository is now outdated. Please use the one linked to https://cmip-ipo-internal.github.io/cmipipo-mkdocs-course/. (click on the git icon in the top corner)
+
+
+
 # MIP Documentation Template
 
 [![Deploy](https://github.com/WCRP-CMIP/MIP-template/actions/workflows/deploy.yml/badge.svg)](https://github.com/WCRP-CMIP/MIP-template/actions/workflows/deploy.yml)
